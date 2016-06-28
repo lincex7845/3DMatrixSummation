@@ -20,11 +20,6 @@ public final class Constraints {
 	public static final int MAX_SIZE_PER_DIMENSION = 0x64;
 	
 	/**
-	 * The minimum number of blocks per dimension: 1
-	 */
-	public static final int MIN_SIZE_PER_DIMENSION = 0x1;
-	
-	/**
 	 * The maximum number of operations to be performed in each test: 1000
 	 */
 	public static final int MAX_NUMBER_OF_OPERATIONS = 1000;
@@ -48,6 +43,11 @@ public final class Constraints {
 	 * The pattern of query operation: <i>QUERY x1 y1 z1 x2 y2 z2</i>
 	 */
 	public static final String QUERY_OPERATION_PATTERN = "(?)^QUERY\\s\\d\\s\\d\\s\\d\\s\\d\\s\\d\\s\\d";
+
+	/**
+	 * The minimum number of test cases to be performed (1)
+	 */
+	public static final int ONE = 1;
 	
 	/**
 	 * Constructor by default

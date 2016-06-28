@@ -22,7 +22,7 @@ public class Cube {
 	 * The size per dimension. The size must be between 1 and 100
 	 */
 	@Max(Constraints.MAX_SIZE_PER_DIMENSION)
-	@Min(Constraints.MIN_SIZE_PER_DIMENSION)
+	@Min(Constraints.ONE)
 	private int dimensionSize;
 
 	/**
@@ -41,6 +41,7 @@ public class Cube {
 	 *            {@link Constraints#MAX_SIZE_PER_DIMENSION}
 	 */
 	public Cube(int dimensionSize) {
+		
 		this.dimensionSize = dimensionSize;
 		this.matrix = new int[dimensionSize][dimensionSize][dimensionSize];
 	}
@@ -58,14 +59,9 @@ public class Cube {
 	public void updateBlockValue(
 			@NotNull Coordinate blockCoordinates,
 			@Min(Constraints.MIN_VALUE_IN_BLOCK) @Max(Constraints.MAX_VALUE_IN_BLOCK) int value) {
-		if (validateCoordinate(blockCoordinates)) {
-			this.matrix[blockCoordinates.getX() - 1][blockCoordinates.getY() - 1][blockCoordinates
-					.getZ() - 1] = value;
-		} else {
-			throw new UnsupportedOperationException(String.format(
-					"The coordinates %s are out of boundaries",
-					blockCoordinates.toString()));
-		}
+		
+		this.matrix[blockCoordinates.getX() - 1][blockCoordinates.getY() - 1][blockCoordinates
+				.getZ() - 1] = value;
 	}
 
 	/**
@@ -81,27 +77,19 @@ public class Cube {
 	 */
 	public long getSummationBetweenBlocks(Coordinate startBlockCoordinates,
 			Coordinate endBlockCoordinates) {
-		if (validateCoordinate(startBlockCoordinates)
-				&& validateCoordinate(endBlockCoordinates)) {
-			long summatory = 0;
-			for (int i = startBlockCoordinates.getX() - 1; i < endBlockCoordinates
-					.getX(); i++) {
-				for (int j = startBlockCoordinates.getY() - 1; j < endBlockCoordinates
-						.getY(); j++) {
-					for (int k = startBlockCoordinates.getZ() - 1; k < endBlockCoordinates
-							.getZ(); k++) {
-						summatory += this.matrix[i][j][k];
-					}
+
+		long summatory = 0;
+		for (int i = startBlockCoordinates.getX() - 1; i < endBlockCoordinates
+				.getX(); i++) {
+			for (int j = startBlockCoordinates.getY() - 1; j < endBlockCoordinates
+					.getY(); j++) {
+				for (int k = startBlockCoordinates.getZ() - 1; k < endBlockCoordinates
+						.getZ(); k++) {
+					summatory += this.matrix[i][j][k];
 				}
 			}
-			return summatory;
-		} else {
-			throw new UnsupportedOperationException(
-					String.format(
-							"One of the given coordinates: %s or %s are out of boundaries",
-							startBlockCoordinates.toString(),
-							endBlockCoordinates.toString()));
 		}
+		return summatory;
 	}
 
 	/**
@@ -112,14 +100,9 @@ public class Cube {
 	 * @return The current value in the block
 	 */
 	public int getBlockValue(@NotNull Coordinate blockCoordinates) {
-		if (validateCoordinate(blockCoordinates)) {
-			return this.matrix[blockCoordinates.getX() - 1][blockCoordinates
-					.getY() - 1][blockCoordinates.getZ() - 1];
-		} else {
-			throw new UnsupportedOperationException(String.format(
-					"The coordinates %s are out of boundaries",
-					blockCoordinates.toString()));
-		}
+
+		return this.matrix[blockCoordinates.getX() - 1][blockCoordinates.getY() - 1][blockCoordinates
+				.getZ() - 1];
 	}
 
 	/**
@@ -134,29 +117,5 @@ public class Cube {
 	 */
 	public int[][][] getMatrix() {
 		return matrix;
-	}
-
-	/**
-	 * This method validates if the given coordinates are not out of matrix
-	 * boundaries
-	 * 
-	 * @param coordinate
-	 * @return
-	 */
-	private boolean validateCoordinate(Coordinate coordinate) {
-		return validateDimension(coordinate.getX())
-				&& validateDimension(coordinate.getY())
-				&& validateDimension(coordinate.getZ());
-	}
-
-	/**
-	 * This method validates if the given value is less than or equals to the
-	 * {@link Cube#dimensionSize} value
-	 * 
-	 * @param axisValue
-	 * @return
-	 */
-	private boolean validateDimension(int axisValue) {
-		return axisValue <= dimensionSize;
 	}
 }

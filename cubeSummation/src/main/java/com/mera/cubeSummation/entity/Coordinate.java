@@ -18,15 +18,15 @@ import com.mera.cubeSummation.commons.Constraints;
 public class Coordinate {
 
 	@Max(Constraints.MAX_SIZE_PER_DIMENSION)
-	@Min(Constraints.MIN_SIZE_PER_DIMENSION)
+	@Min(Constraints.ONE)
 	private int x;
 
 	@Max(Constraints.MAX_SIZE_PER_DIMENSION)
-	@Min(Constraints.MIN_SIZE_PER_DIMENSION)
+	@Min(Constraints.ONE)
 	private int y;
 
 	@Max(Constraints.MAX_SIZE_PER_DIMENSION)
-	@Min(Constraints.MIN_SIZE_PER_DIMENSION)
+	@Min(Constraints.ONE)
 	private int z;
 
 	/**

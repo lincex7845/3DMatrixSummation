@@ -19,11 +19,8 @@ import com.mera.cubeSummation.entity.Cube;
  */
 public interface ICubeDAO {
 
-	/**
-	 * Represents the blank space character
-	 */
 	public static final String BLANK_SPACE = " ";
-
+	
 	/**
 	 * This operation updates the value of the given block in the given cube
 	 * 
@@ -35,6 +32,7 @@ public interface ICubeDAO {
 			@NotBlank @Pattern(regexp = Constraints.UPDATE_OPERATION_PATTERN) String updateCommand);
 
 	/**
+	 * This method gets the summation between two blocks
 	 * 
 	 * @param queryCommand
 	 *            A string which follows the pattern

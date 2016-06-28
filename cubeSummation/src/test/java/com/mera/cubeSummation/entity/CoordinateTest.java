@@ -63,7 +63,7 @@ public class CoordinateTest {
 		assertTrue(constraintViolations.isEmpty());
 		
 		coordinate = new Coordinate(Constraints.MAX_SIZE_PER_DIMENSION + 1,
-				Constraints.MIN_SIZE_PER_DIMENSION, 1 );
+				Constraints.ONE, 1 );
 		constraintViolations = validator.validate(coordinate);
 		assertTrue(!constraintViolations.isEmpty());		
 		Class<? extends Annotation> constraintType = constraintViolations
@@ -73,7 +73,7 @@ public class CoordinateTest {
 		
 		constraintViolations.clear();
 		coordinate = new Coordinate(Constraints.MAX_SIZE_PER_DIMENSION ,
-				Constraints.MIN_SIZE_PER_DIMENSION - 1, 1 );
+				Constraints.ONE - 1, 1 );
 		constraintViolations = validator.validate(coordinate);
 		assertTrue(!constraintViolations.isEmpty());		
 		constraintType = constraintViolations
