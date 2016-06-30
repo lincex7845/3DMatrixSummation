@@ -19,26 +19,33 @@ public class CubeSummationRequest {
 
 	@NotEmpty 
 	@Size(max=Constraints.MAX_NUMBER_OF_TEST) 
-	private List<CubeSummationOperation> cubeSummationTests;
+	private List<CubeSummationTestCase> cubeSummationTests;
 
+	/**
+	 * Constructor by default
+	 */
+	public CubeSummationRequest(){
+		//empty
+	}
+	
 	/**
 	 * @param cubeSummationTests
 	 */
-	public CubeSummationRequest(List<CubeSummationOperation> cubeSummationTests) {
+	public CubeSummationRequest(List<CubeSummationTestCase> cubeSummationTests) {
 		this.cubeSummationTests = cubeSummationTests;
 	}
 
 	/**
 	 * @return the cubeSummationTest
 	 */
-	public List<CubeSummationOperation> getCubeSummationTest() {
+	public List<CubeSummationTestCase> getCubeSummationTests() {
 		return cubeSummationTests;
 	}
 
 	/**
 	 * @param cubeSummationTest the cubeSummationTest to set
 	 */
-	public void setCubeSummationTests(List<CubeSummationOperation> cubeSummationTests) {
+	public void setCubeSummationTests(List<CubeSummationTestCase> cubeSummationTests) {
 		this.cubeSummationTests = cubeSummationTests;
 	}
 	

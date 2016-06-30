@@ -37,12 +37,12 @@ public final class Constraints {
 	/**
 	 * The pattern of the update operation: <i>UPDATE x y z W</i>
 	 */
-	public static final String UPDATE_OPERATION_PATTERN = "(?)^UPDATE\\s\\d\\s\\d\\s\\d\\s\\d";
+	public static final String UPDATE_OPERATION_PATTERN = "(?)^UPDATE\\s\\d+\\s\\d+\\s\\d+\\s-?\\d+";
 	
 	/**
 	 * The pattern of query operation: <i>QUERY x1 y1 z1 x2 y2 z2</i>
 	 */
-	public static final String QUERY_OPERATION_PATTERN = "(?)^QUERY\\s\\d\\s\\d\\s\\d\\s\\d\\s\\d\\s\\d";
+	public static final String QUERY_OPERATION_PATTERN = "(?)^QUERY\\s\\d+\\s\\d+\\s\\d+\\s\\d+\\s\\d+\\s\\d+";
 
 	/**
 	 * The minimum number of test cases to be performed (1)

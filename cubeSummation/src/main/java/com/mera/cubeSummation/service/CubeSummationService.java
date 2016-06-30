@@ -3,8 +3,8 @@
  */
 package com.mera.cubeSummation.service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotNull;
@@ -27,6 +27,8 @@ import com.mera.cubeSummation.entity.Cube;
 import com.mera.cubeSummation.entity.CubeSummationOperation;
 import com.mera.cubeSummation.entity.CubeSummationRequest;
 import com.mera.cubeSummation.entity.CubeSummationResponse;
+import com.mera.cubeSummation.entity.CubeSummationTestCase;
+import com.mera.cubeSummation.entity.CubeSummationTestCaseResult;
 
 /**
  * @author DavidCamilo
@@ -55,17 +57,19 @@ public class CubeSummationService {
 		Response response;
 		try {
 			int status = Response.Status.OK.getStatusCode();
-			Map<String, String> operationResults = new HashMap<>();
-			for (CubeSummationOperation test : request.getCubeSummationTest()) {
+			List<CubeSummationTestCaseResult> cubeSummationTestResults = new ArrayList<>();
+			for (CubeSummationTestCase test : request.getCubeSummationTests()) {
 				Cube cube = new Cube(test.getNumberOfBlocksPerDimension());
 				ICubeDAO cubeDAO = new CubeDAO(cube);
+				List<CubeSummationOperation> operationResults = new ArrayList<>();
 				for (int i = 0; i < test.getOperations().length; i++) {
 					executeOperation(cubeDAO, test.getOperations()[i],
 							operationResults);
 				}
+				cubeSummationTestResults.add(new CubeSummationTestCaseResult(operationResults));				
 			}
 			CubeSummationResponse cubeSummationResponse = new CubeSummationResponse(
-					status, "Successfully Executed!", operationResults);
+					status, "Successfully Executed!", cubeSummationTestResults);
 			response = Response.status(status)
 					.entity(GSON.toJson(cubeSummationResponse)).build();
 		} catch (UnsupportedOperationException | ConstraintViolationException e) {
@@ -82,31 +86,36 @@ public class CubeSummationService {
 	 * This method verifies if the operation can be performed, then, executes
 	 * the operation if it is supported.
 	 * 
-	 * @param cubeDAO An instance of {@link ICubeDAO}
-	 * @param operation The command to be performed
-	 * @param operationResults The result of command execution
+	 * @param cubeDAO
+	 *            An instance of {@link ICubeDAO}
+	 * @param operation
+	 *            The command to be performed
+	 * @param operationResults
+	 *            The result of command execution
 	 */
 	private void executeOperation(ICubeDAO cubeDAO, String operation,
-			Map<String, String> operationResults) {
+			List<CubeSummationOperation> operationResults) {
+		
 		if (operation.matches(Constraints.QUERY_OPERATION_PATTERN)) {
-			String result = Long.toString(cubeDAO
-					.querySummatoryBetweenBlocks(operation));
-			operationResults.put(operation, result);
+			operationResults.add(new CubeSummationOperation(operation, Long
+					.toString(cubeDAO.querySummatoryBetweenBlocks(operation))));
 		} else if (operation.matches(Constraints.UPDATE_OPERATION_PATTERN)) {
 			cubeDAO.updateBlockValue(operation);
-			operationResults.put(operation, "Operation successfully executed!");
+			operationResults.add(new CubeSummationOperation(operation,
+					"Operation successfully executed!"));
 		} else {
 			throw new UnsupportedOperationException(String.format(
 					"The operation %s is not supported", operation));
 		}
-
 	}
 
 	/**
 	 * This method builds response body when an exception is raised
 	 * 
-	 * @param statusCode The HTTP status code
-	 * @param e The raised exception
+	 * @param statusCode
+	 *            The HTTP status code
+	 * @param e
+	 *            The raised exception
 	 * @return The response body which contains the error
 	 */
 	private Response buildErrorResponse(int statusCode, Exception e) {

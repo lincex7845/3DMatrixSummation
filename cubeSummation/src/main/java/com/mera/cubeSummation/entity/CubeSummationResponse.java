@@ -3,7 +3,7 @@
  */
 package com.mera.cubeSummation.entity;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * @author DavidCamilo
@@ -22,20 +22,27 @@ public class CubeSummationResponse {
 	private String messageDescription;
 	
 	/**
-	 * The result map of the performed operations against the cube
+	 * The list of all results of the operations performed in each test case
 	 */
-	private Map<String, String> operationResults;
+	private List<CubeSummationTestCaseResult> cubeSummationTestResults;
+	
+	/**
+	 * Constructor by default
+	 */
+	public CubeSummationResponse(){
+		//empty
+	}
 
 	/**
 	 * @param messageStatus
 	 * @param messageDescription
-	 * @param operationResults
+	 * @param cubeSummationTestResults
 	 */
 	public CubeSummationResponse(int messageStatus, String messageDescription,
-			Map<String, String> operationResults) {
+			List<CubeSummationTestCaseResult> cubeSummationTestResults) {
 		this.messageStatus = messageStatus;
 		this.messageDescription = messageDescription;
-		this.operationResults = operationResults;
+		this.cubeSummationTestResults = cubeSummationTestResults;
 	}
 
 	/**
@@ -55,8 +62,8 @@ public class CubeSummationResponse {
 	/**
 	 * @return the operationResults
 	 */
-	public Map<String, String> getOperationResults() {
-		return operationResults;
+	public List<CubeSummationTestCaseResult> getCubeSummationTestResults() {
+		return cubeSummationTestResults;
 	}
 
 	/**
@@ -76,7 +83,7 @@ public class CubeSummationResponse {
 	/**
 	 * @param operationResults the operationResults to set
 	 */
-	public void setOperationResults(Map<String, String> operationResults) {
-		this.operationResults = operationResults;
+	public void setCubeSummationTestResults(List<CubeSummationTestCaseResult> cubeSummationTestResults) {
+		this.cubeSummationTestResults = cubeSummationTestResults;
 	}
 }

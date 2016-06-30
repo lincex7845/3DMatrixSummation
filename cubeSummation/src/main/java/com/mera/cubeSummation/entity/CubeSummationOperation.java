@@ -3,67 +3,68 @@
  */
 package com.mera.cubeSummation.entity;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.NotEmpty;
-
-import com.mera.cubeSummation.commons.Constraints;
-
 /**
+ * 
  * @author DavidCamilo
  *         <p>
- *         A POJO which represents each test case of cube summation
+ *         A POJO which represents each performed operation in a test case
  *         </p>
  */
 public class CubeSummationOperation {
 
-	@Max(Constraints.MAX_SIZE_PER_DIMENSION)
-	@Min(Constraints.ONE)
-	private int numberOfBlocksPerDimension;
-
-	@NotEmpty
-	@Size(max = Constraints.MAX_NUMBER_OF_OPERATIONS)
-	private String[] operations;
+	/**
+	 * The performed operation
+	 */
+	private String operation;
 
 	/**
-	 * @param numberOfBlocksPerDimension
-	 * @param operations
+	 * The result of the performed operation
 	 */
-	public CubeSummationOperation(int numberOfBlocksPerDimension,
-			String[] operations) {
-		this.numberOfBlocksPerDimension = numberOfBlocksPerDimension;
-		this.operations = operations;
+	private String result;
+
+	/**
+	 * Constructor by default
+	 */
+	public CubeSummationOperation() {
+		// empty
 	}
 
 	/**
-	 * @return the numberOfBlockPerDimension
+	 * @param operation
+	 * @param result
 	 */
-	public int getNumberOfBlocksPerDimension() {
-		return numberOfBlocksPerDimension;
-	}
-	
-	/**
-	 * @return the operations
-	 */
-	public String[] getOperations() {
-		return operations;
+	public CubeSummationOperation(String operation, String result) {
+		this.operation = operation;
+		this.result = result;
 	}
 
 	/**
-	 * @param numberOfBlockPerDimension
-	 *            the numberOfBlockPerDimension to set
+	 * @return the operation
 	 */
-	public void setNumberOfBlocksPerDimension(int numberOfBlocksPerDimension) {
-		this.numberOfBlocksPerDimension = numberOfBlocksPerDimension;
+	public String getOperation() {
+		return operation;
 	}
 
 	/**
-	 * @param operations
-	 *            the operations to set
+	 * @return the result
 	 */
-	public void setOperations(String[] operations) {
-		this.operations = operations;
+	public String getResult() {
+		return result;
+	}
+
+	/**
+	 * @param operation
+	 *            the operation to set
+	 */
+	public void setOperation(String operation) {
+		this.operation = operation;
+	}
+
+	/**
+	 * @param result
+	 *            the result to set
+	 */
+	public void setResult(String result) {
+		this.result = result;
 	}
 }
