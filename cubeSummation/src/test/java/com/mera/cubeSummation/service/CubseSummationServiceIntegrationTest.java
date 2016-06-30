@@ -34,9 +34,16 @@ import com.sun.jersey.api.client.WebResource;
  */
 public class CubseSummationServiceIntegrationTest {
 
+//	Uncomment the lines below when you are running tests with JUnit
+//	@ClassRule
+//	public static final DropwizardAppRule<Configuration> RULE = new DropwizardAppRule<Configuration>(
+//			ApiEntryPoint.class, "cube-summation-configuration.yml");
+	
+//  Uncomment the lines below when you are running tests with maven
 	@ClassRule
 	public static final DropwizardAppRule<Configuration> RULE = new DropwizardAppRule<Configuration>(
-			ApiEntryPoint.class, "cube-summation-configuration.yml");
+			ApiEntryPoint.class, "../cube-summation-configuration.yml");
+
 
 	private static Client CLIENT;
 
