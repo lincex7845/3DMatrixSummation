@@ -18,13 +18,17 @@ import com.mera.cubeSummation.commons.Constraints;
  *         </p>
  */
 public class CubeSummationTestCase {
+	
+	private static final String MESSAGE_ERROR_DIMENSION_SIZE = "The number of blocks per dimension must be between 1 and 100";
+	
+	private static final String MESSAGE_ERROR_OPERATIONS_SIZE = "The number of operations to execute must be between 1 and 1000";
 
-	@Max(Constraints.MAX_SIZE_PER_DIMENSION)
-	@Min(Constraints.ONE)
+	@Max(value=Constraints.MAX_SIZE_PER_DIMENSION, message=MESSAGE_ERROR_DIMENSION_SIZE)
+	@Min(value=Constraints.ONE, message=MESSAGE_ERROR_DIMENSION_SIZE)
 	private int numberOfBlocksPerDimension;
 
-	@NotEmpty
-	@Size(max = Constraints.MAX_NUMBER_OF_OPERATIONS)
+	@NotEmpty(message=MESSAGE_ERROR_OPERATIONS_SIZE)
+	@Size(max = Constraints.MAX_NUMBER_OF_OPERATIONS, message=MESSAGE_ERROR_OPERATIONS_SIZE)
 	private String[] operations;
 	
 	/**

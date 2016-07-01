@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -29,6 +30,7 @@ import com.mera.cubeSummation.entity.CubeSummationRequest;
 import com.mera.cubeSummation.entity.CubeSummationResponse;
 import com.mera.cubeSummation.entity.CubeSummationTestCase;
 import com.mera.cubeSummation.entity.CubeSummationTestCaseResult;
+import com.mera.cubeSummation.util.ValidatorUtil;
 
 /**
  * @author DavidCamilo
@@ -52,10 +54,11 @@ public class CubeSummationService {
 
 	@POST
 	@Timed
-	public Response getCubeSummation(@NotNull CubeSummationRequest request) {
+	public Response getCubeSummation(@Valid @NotNull CubeSummationRequest request) {
 
 		Response response;
 		try {
+			request.getCubeSummationTests().forEach(testCase -> ValidatorUtil.validate(testCase));
 			int status = Response.Status.OK.getStatusCode();
 			List<CubeSummationTestCaseResult> cubeSummationTestResults = new ArrayList<>();
 			for (CubeSummationTestCase test : request.getCubeSummationTests()) {

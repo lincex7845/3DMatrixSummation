@@ -3,17 +3,12 @@
  */
 package com.mera.cubeSummation.dao;
 
-import java.util.Set;
-
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import javax.validation.constraints.NotNull;
 
 import com.mera.cubeSummation.commons.Constraints;
 import com.mera.cubeSummation.entity.Coordinate;
 import com.mera.cubeSummation.entity.Cube;
+import com.mera.cubeSummation.util.ValidatorUtil;
 
 /**
  * @author DavidCamilo
@@ -24,11 +19,6 @@ import com.mera.cubeSummation.entity.Cube;
  */
 public class CubeDAO implements ICubeDAO {
 
-	private static final ValidatorFactory VALIDATOR_FACTORY = Validation
-			.buildDefaultValidatorFactory();
-
-	private static final Validator VALIDATOR = VALIDATOR_FACTORY.getValidator();
-
 	private Cube cube;
 
 	/**
@@ -38,7 +28,7 @@ public class CubeDAO implements ICubeDAO {
 	 *            A not null instance of {@link Cube}
 	 */
 	public CubeDAO(@NotNull Cube cube) {
-		validate(cube);
+		ValidatorUtil.validate(cube);
 		this.cube = cube;
 	}
 
@@ -127,7 +117,7 @@ public class CubeDAO implements ICubeDAO {
 	 */
 	private void validateCoordinate(Coordinate blockCoordinates) {
 
-		validate(blockCoordinates);
+		ValidatorUtil.validate(blockCoordinates);
 		if (isValidAxisValue(blockCoordinates.getX())
 				&& isValidAxisValue(blockCoordinates.getY())
 				&& isValidAxisValue(blockCoordinates.getZ())) {
@@ -161,20 +151,5 @@ public class CubeDAO implements ICubeDAO {
 		org.apache.commons.lang3.Validate.exclusiveBetween(
 				Constraints.MIN_VALUE_IN_BLOCK, Constraints.MAX_VALUE_IN_BLOCK,
 				newValue);
-	}
-
-	/**
-	 * This method checks constraints in objects
-	 * 
-	 * @param object
-	 * @return
-	 */
-	private <T> void validate(T object) {
-		Set<ConstraintViolation<T>> constraintViolations = VALIDATOR
-				.validate(object);
-		if (!constraintViolations.isEmpty()) {
-			throw new IllegalArgumentException(constraintViolations.iterator()
-					.next().getConstraintDescriptor().getMessageTemplate());
-		}
 	}
 }
