@@ -18,11 +18,13 @@ import com.mera.cubeSummation.commons.Constraints;
 
 public class Cube {
 
+	private static final String MESSAGE_ERROR_DIMENSION_SIZE = "The number of blocks per dimension must be between 1 and 100";
+
 	/**
 	 * The size per dimension. The size must be between 1 and 100
 	 */
-	@Max(Constraints.MAX_SIZE_PER_DIMENSION)
-	@Min(Constraints.ONE)
+	@Max(value = Constraints.MAX_SIZE_PER_DIMENSION, message = MESSAGE_ERROR_DIMENSION_SIZE)
+	@Min(value = Constraints.ONE, message = MESSAGE_ERROR_DIMENSION_SIZE)
 	private int dimensionSize;
 
 	/**
@@ -41,7 +43,7 @@ public class Cube {
 	 *            {@link Constraints#MAX_SIZE_PER_DIMENSION}
 	 */
 	public Cube(int dimensionSize) {
-		
+
 		this.dimensionSize = dimensionSize;
 		this.matrix = new int[dimensionSize][dimensionSize][dimensionSize];
 	}
@@ -56,10 +58,8 @@ public class Cube {
 	 *            -10<sup>9</sup> The maximum value to be saved is
 	 *            10<sup>9</sup>
 	 */
-	public void updateBlockValue(
-			@NotNull Coordinate blockCoordinates,
-			@Min(Constraints.MIN_VALUE_IN_BLOCK) @Max(Constraints.MAX_VALUE_IN_BLOCK) int value) {
-		
+	public void updateBlockValue(Coordinate blockCoordinates, int value) {
+
 		this.matrix[blockCoordinates.getX() - 1][blockCoordinates.getY() - 1][blockCoordinates
 				.getZ() - 1] = value;
 	}

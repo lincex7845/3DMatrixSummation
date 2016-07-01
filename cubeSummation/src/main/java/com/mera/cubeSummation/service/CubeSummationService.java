@@ -72,7 +72,7 @@ public class CubeSummationService {
 					status, "Successfully Executed!", cubeSummationTestResults);
 			response = Response.status(status)
 					.entity(GSON.toJson(cubeSummationResponse)).build();
-		} catch (UnsupportedOperationException | ConstraintViolationException e) {
+		} catch (UnsupportedOperationException | ConstraintViolationException | IllegalArgumentException e) {
 			response = buildErrorResponse(
 					Response.Status.BAD_REQUEST.getStatusCode(), e);
 		} catch (Exception e) {

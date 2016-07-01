@@ -3,8 +3,15 @@
  */
 package com.mera.cubeSummation.dao;
 
+import java.util.Set;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import javax.validation.constraints.NotNull;
 
+import com.mera.cubeSummation.commons.Constraints;
 import com.mera.cubeSummation.entity.Coordinate;
 import com.mera.cubeSummation.entity.Cube;
 
@@ -17,6 +24,11 @@ import com.mera.cubeSummation.entity.Cube;
  */
 public class CubeDAO implements ICubeDAO {
 
+	private static final ValidatorFactory VALIDATOR_FACTORY = Validation
+			.buildDefaultValidatorFactory();
+
+	private static final Validator VALIDATOR = VALIDATOR_FACTORY.getValidator();
+
 	private Cube cube;
 
 	/**
@@ -26,6 +38,7 @@ public class CubeDAO implements ICubeDAO {
 	 *            A not null instance of {@link Cube}
 	 */
 	public CubeDAO(@NotNull Cube cube) {
+		validate(cube);
 		this.cube = cube;
 	}
 
@@ -45,6 +58,7 @@ public class CubeDAO implements ICubeDAO {
 				Integer.parseInt(updateCommandParameters[3]));
 		int newValue = Integer.parseInt(updateCommandParameters[4]);
 		validateCoordinate(blockCoordinates);
+		validateNewValue(newValue);
 		cube.updateBlockValue(blockCoordinates, newValue);
 	}
 
@@ -73,8 +87,8 @@ public class CubeDAO implements ICubeDAO {
 	}
 
 	/**
-	 * This method checks if the given coordinates are compliant with the following
-	 * restrictions
+	 * This method checks if the given coordinates are compliant with the
+	 * following restrictions
 	 * 
 	 * <pre>
 	 *  1 <= x1 <= x2 <= N 
@@ -113,6 +127,7 @@ public class CubeDAO implements ICubeDAO {
 	 */
 	private void validateCoordinate(Coordinate blockCoordinates) {
 
+		validate(blockCoordinates);
 		if (isValidAxisValue(blockCoordinates.getX())
 				&& isValidAxisValue(blockCoordinates.getY())
 				&& isValidAxisValue(blockCoordinates.getZ())) {
@@ -134,5 +149,32 @@ public class CubeDAO implements ICubeDAO {
 	private boolean isValidAxisValue(int axisValue) {
 
 		return axisValue <= cube.getDimensionSize();
+	}
+
+	/**
+	 * This method checks if the new values is between 10<sup>-9</sup> and
+	 * 10<sup>9</sup>
+	 * 
+	 * @param newValue
+	 */
+	private void validateNewValue(int newValue) {
+		org.apache.commons.lang3.Validate.exclusiveBetween(
+				Constraints.MIN_VALUE_IN_BLOCK, Constraints.MAX_VALUE_IN_BLOCK,
+				newValue);
+	}
+
+	/**
+	 * This method checks constraints in objects
+	 * 
+	 * @param object
+	 * @return
+	 */
+	private <T> void validate(T object) {
+		Set<ConstraintViolation<T>> constraintViolations = VALIDATOR
+				.validate(object);
+		if (!constraintViolations.isEmpty()) {
+			throw new IllegalArgumentException(constraintViolations.iterator()
+					.next().getConstraintDescriptor().getMessageTemplate());
+		}
 	}
 }

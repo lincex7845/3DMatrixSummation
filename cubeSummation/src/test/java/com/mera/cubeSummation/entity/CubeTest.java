@@ -3,10 +3,11 @@
  */
 package com.mera.cubeSummation.entity;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -15,7 +16,6 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.executable.ExecutableValidator;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,14 +33,11 @@ public class CubeTest {
 
 	private static Validator validator;
 
-	private static ExecutableValidator executableValidator;
-
 	@BeforeClass
 	public static void setUp() {
 
 		factory = Validation.buildDefaultValidatorFactory();
 		validator = factory.getValidator();
-		executableValidator = validator.forExecutables();
 	}
 
 	/**
@@ -88,44 +85,7 @@ public class CubeTest {
 		assertEquals(23l, cube.getBlockValue(firstBlockCoordinates));
 	}
 
-	/**
-	 * Test method for
-	 * {@link com.mera.cubeSummation.entity.Cube#updateBlockValue(com.mera.cubeSummation.entity.Coordinate, int)}
-	 * .
-	 * 
-	 * @throws SecurityException
-	 * @throws NoSuchMethodException
-	 */
-	@Test
-	public void testFailedUpdateBlockValue() throws NoSuchMethodException,
-			SecurityException {
-		
-		Cube cube = new Cube(4);
-		Coordinate firstBlockCoordinates = new Coordinate(1, 1, 1);
-		Coordinate lastBlockCoordinates = new Coordinate(4, 4, 4);
-		
-		Method updateBlockValueMethod = Cube.class.getMethod("updateBlockValue",
-				Coordinate.class, int.class);
-		Object[] parameters = new Object[]{ firstBlockCoordinates,
-				Constraints.MAX_VALUE_IN_BLOCK + 1 };
-		Set<ConstraintViolation<Cube>> constraintViolations = executableValidator
-				.validateParameters(cube, updateBlockValueMethod, parameters);
-		assertTrue(!constraintViolations.isEmpty());
-		Class<? extends Annotation> constraintType = constraintViolations
-				.iterator().next().getConstraintDescriptor().getAnnotation()
-				.annotationType();
-		assertEquals(Max.class, constraintType);
-		
-		constraintViolations.clear();
-		parameters = new Object[]{lastBlockCoordinates,	Constraints.MIN_VALUE_IN_BLOCK - 1};
-		constraintViolations = executableValidator
-				.validateParameters(cube, updateBlockValueMethod, parameters);
-		assertTrue(!constraintViolations.isEmpty());constraintType = constraintViolations
-				.iterator().next().getConstraintDescriptor().getAnnotation()
-				.annotationType();
-		assertEquals(Min.class, constraintType);
-	}
-
+	
 	/**
 	 * Test method for
 	 * {@link com.mera.cubeSummation.entity.Cube#getSummationBetweenBlocks(com.mera.cubeSummation.entity.Coordinate, com.mera.cubeSummation.entity.Coordinate)}
